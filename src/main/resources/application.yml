@@ -1,3 +1,64 @@
 spring:
   application:
     name: kyc-bills
+  profiles:
+    active: dev
+  jackson:
+    default-property-inclusion: NON_NULL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health
+  endpoint:
+    health:
+      show-details: always
+  health:
+    diskspace:
+      enabled: false
+    external-services:
+      enabled: true
+  info:
+    build:
+      enabled: false
+
+server:
+  port: 9008
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    preferIpAddress: true
+  client:
+    enabled: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:9100/eureka
+
+kyc-config:
+  page-size: 5
+
+kyc-messages:
+  catalog:
+    messages:
+      "000":
+        code: KYC-BILLS-000
+        message: Unexpected Error
+        type: ERROR
+      "001":
+        code: KYC-BILLS-001
+        message: The request is invalid
+        type: ERROR
+      "002":
+        code: KYC-BILLS-002
+        message: The operation could not be performed
+        type: ERROR
+      "003":
+        code: KYC-BILLS-003
+        message: The request is unauthorized or not allowed
+        type: ERROR
+      "004":
+        code: KYC-BILLS-004
+        message: The bill is not valid or do not exist
+        type: ERROR

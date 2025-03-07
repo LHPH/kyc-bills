@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:6000/kyc_database?user=kyc_user&password=kyc_pass
+    driverClassName: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+
+eureka:
+  client:
+    enabled: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:9100/eureka
+
+logging:
+  level:
+    root: INFO
+    com.kyc: INFO
+    org.springframework: INFO
+    org.springframework.jdbc: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
