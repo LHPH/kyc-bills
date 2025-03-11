@@ -33,6 +33,18 @@ public class BillsController {
         return delegate.getAllBills(requestData);
     }
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity<ResponseData<List<BillData>>> getAllCustomerBills(@RequestParam(value = "page",defaultValue = "0",required = false) String page,
+                                                                            @PathVariable String id){
+
+        RequestData<Void> requestData = RequestData.<Void>builder()
+                .queryParams(Collections.singletonMap(PARAM_PAGE,page))
+                .pathParams(Collections.singletonMap(PARAM_ID,id))
+                .build();
+
+        return delegate.executiveQueryCustomerBills(requestData);
+    }
+
     @GetMapping("/bill/{id}")
     public ResponseEntity<ResponseData<BillData>> getBillById(@PathVariable String id){
 

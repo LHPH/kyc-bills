@@ -47,12 +47,11 @@ public class BillsService {
     @Value("${kyc-config.page-size}")
     private int pageSize;
 
-    public ResponseData<List<BillData>> getAllBills(RequestData<Void> requestData){
+    public ResponseData<List<BillData>> getAllBills(Long customerId, String strPage){
 
         try{
-            Map<String,String> params = requestData.getQueryParams();
 
-            int page = NumberUtils.toInt(params.get(PARAM_PAGE),0);
+            int page = NumberUtils.toInt(strPage,0);
             if(page < 0){
                 page = 0;
             }
@@ -69,7 +68,7 @@ public class BillsService {
             throw KycRestException.builderRestException()
                     .errorData(kycMessages.getMessage(MESSAGE_002))
                     .status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .inputData(requestData)
+                    .inputData(customerId)
                     .build();
         }
     }
