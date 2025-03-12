@@ -85,13 +85,13 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				minimum = 0.5
+				minimum = 0.8
 			}
 		}
 	}
-
 }
-
+// to run coverage verification during the build (and fail when appropriate)
+check.dependsOn jacocoTestCoverageVerification
 
 tasks.named("jar") {
 	enabled = false

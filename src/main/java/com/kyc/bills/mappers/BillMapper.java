@@ -2,6 +2,7 @@ package com.kyc.bills.mappers;
 
 import com.kyc.bills.entity.BillEntity;
 import com.kyc.bills.model.BillData;
+import org.apache.commons.lang3.ObjectUtils;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -14,7 +15,14 @@ public interface BillMapper {
 
     @Named("getStatus")
     static String getStatus(BillEntity source){
-        Integer idStatus = source.getIdStatus();
-        return "status";
+
+        Integer idStatus = ObjectUtils.defaultIfNull(source.getIdStatus(),0);
+        return switch(idStatus){
+            case 1 -> "PAID";
+            case 2 -> "CANCELED";
+            case 3 -> "EXPIRED";
+            case 4 -> "VALID";
+            default -> "UNKNOWN";
+        };
     }
 }

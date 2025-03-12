@@ -57,7 +57,7 @@ public class BillsService {
             }
 
             Pageable pageable = Pageable.ofSize(pageSize).withPage(page);
-            Page<BillEntity> pageEntity = billRepository.findByIdCustomerOrderByIdCustomer(5L, pageable);
+            Page<BillEntity> pageEntity = billRepository.findByIdCustomerOrderByIdCustomer(customerId, pageable);
 
             return ResponseData.of(pageEntity.stream()
                     .map(billMapper::toModel)
