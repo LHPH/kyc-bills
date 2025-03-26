@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: ${DATABASE_URI}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+  cloud:
+    vault:
+      enabled: true
+      token: ${kyc.config.vault.token}
+      uri: ${kyc.config.vault.uri}
+      connection-timeout: 5000
+      read-timeout: 15000
+  config:
+    import: vault://secret/kyc/${spring.profiles.active}/${spring.application.name}
+
+kyc-config:
+  page-size: 5
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 30
+    preferIpAddress: true
+  client:
+    enabled: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${kyc.config.hostname}:9100/eureka
+
+logging:
+  file:
+    name: /opt/kyc/logs/${spring.application.name}.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: /opt/kyc/logs/${spring.application.name}/%d{yyyy-MM-dd}.%i.log.gz
+      max-file-size: 50MB
+      max-history: 3
+  level:
+    root: INFO
+    com.kyc: INFO
+    org.springframework: INFO
+    org.springframework.jdbc.core.JdbcTemplate: INFO
+    org.springframework.jdbc.core.StatementCreatorUtils: INFO
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE

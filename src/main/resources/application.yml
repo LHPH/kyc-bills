@@ -24,7 +24,7 @@ management:
       enabled: false
 
 server:
-  port: 9008
+  port: 9009
 
 eureka:
   instance:
@@ -35,9 +35,6 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:9100/eureka
-
-kyc-config:
-  page-size: 5
 
 kyc-messages:
   catalog:

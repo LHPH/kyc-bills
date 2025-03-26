@@ -15,14 +15,10 @@ import org.springframework.data.relational.core.mapping.DefaultNamingStrategy;
 import static com.kyc.bills.constants.AppConstants.MESSAGE_000;
 import static com.kyc.bills.constants.AppConstants.MESSAGE_001;
 
+
 @Import(value = {KycMessages.class, BuildDetailConfig.class, KycGenericRestExceptionHandler.class})
 @Configuration
 public class AppConfig {
-
-    @Bean
-    public JavaTimeModule javaTimeModule(){
-        return new JavaTimeModule();
-    }
 
     @Bean
     public KycUnhandledExceptionHandler kycUnhandledExceptionHandler(KycMessages kycMessages){
@@ -34,6 +30,11 @@ public class AppConfig {
     public KycValidationRestExceptionHandler kycValidationRestExceptionHandler(KycMessages kycMessages){
 
         return new KycValidationRestExceptionHandler(kycMessages.getMessage(MESSAGE_001));
+    }
+
+   @Bean
+    public JavaTimeModule javaTimeModule(){
+        return new JavaTimeModule();
     }
 
     @Bean
