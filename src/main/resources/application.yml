@@ -55,6 +55,7 @@ kyc-messages:
         code: KYC-BILLS-003
         message: The request is unauthorized or not allowed
         type: ERROR
+        hint: AUTH
       "004":
         code: KYC-BILLS-004
         message: The bill is not valid or do not exist
