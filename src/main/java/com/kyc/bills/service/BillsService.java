@@ -4,6 +4,7 @@ import com.kyc.bills.entity.BillEntity;
 import com.kyc.bills.mappers.BillMapper;
 import com.kyc.bills.model.BillData;
 import com.kyc.bills.repositories.BillRepository;
+import com.kyc.core.enums.KycUserTypeEnum;
 import com.kyc.core.exception.KycRestException;
 import com.kyc.core.model.web.RequestData;
 import com.kyc.core.model.web.ResponseData;
@@ -81,8 +82,11 @@ public class BillsService {
             if(id!=null){
 
                 Optional<BillEntity> opEntity = billRepository.findById(id);
+                Long owner = requestData.getAuth().getOwner();
+                KycUserTypeEnum role = KycUserTypeEnum.getInstance(requestData.getAuth().getRole());
 
-                if(opEntity.isPresent()){
+                if(opEntity.isPresent() &&
+                        (opEntity.get().getIdCustomer().equals(owner) || KycUserTypeEnum.EXECUTIVE.equals(role))){
 
                     return ResponseData.of(billMapper.toModel(opEntity.get()));
                 }

@@ -6,6 +6,7 @@ import com.kyc.core.model.web.RequestData;
 import com.kyc.core.model.web.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ public class BillsController {
     @Autowired
     private BillsDelegate delegate;
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/")
     public ResponseEntity<ResponseData<List<BillData>>> getAllBills(@RequestParam(value = "page",defaultValue = "0",required = false) String page){
 
@@ -33,6 +35,7 @@ public class BillsController {
         return delegate.getAllBills(requestData);
     }
 
+    @PreAuthorize("hasRole('EXECUTIVE')")
     @GetMapping("/customer/{id}")
     public ResponseEntity<ResponseData<List<BillData>>> getAllCustomerBills(@RequestParam(value = "page",defaultValue = "0",required = false) String page,
                                                                             @PathVariable String id){

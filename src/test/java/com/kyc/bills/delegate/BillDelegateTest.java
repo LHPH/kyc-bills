@@ -9,8 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +22,7 @@ import java.util.List;
 
 import static com.kyc.core.constants.GeneralConstants.PARAM_ID;
 import static com.kyc.core.constants.GeneralConstants.PARAM_PAGE;
+import static com.kyc.core.util.TestsUtil.getJwt;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -39,6 +44,7 @@ public class BillDelegateTest {
                 .queryParams(Collections.singletonMap(PARAM_PAGE,"1"))
                 .build();
 
+        loadMethodSecurity();
         given(service.getAllBills(anyLong(),anyString()))
                 .willReturn(ResponseData.of(new ArrayList<>()));
 
@@ -68,10 +74,22 @@ public class BillDelegateTest {
                 .pathParams(Collections.singletonMap(PARAM_ID,"1"))
                 .build();
 
+        loadMethodSecurity();
         given(service.getBillById(any(RequestData.class)))
                 .willReturn(ResponseData.of(new BillData()));
 
         ResponseEntity<ResponseData<BillData>> result =  delegate.getBillById(req);
         Assertions.assertNotNull(result);
+    }
+
+    private void loadMethodSecurity(){
+
+        JwtAuthenticationToken jwtAuthenticationToken = Mockito.mock(JwtAuthenticationToken.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+
+        given(securityContext.getAuthentication()).willReturn(jwtAuthenticationToken);
+        given(jwtAuthenticationToken.getToken()).willReturn(getJwt());
+
+        SecurityContextHolder.setContext(securityContext);
     }
 }

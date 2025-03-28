@@ -5,12 +5,14 @@ import com.kyc.core.config.BuildDetailConfig;
 import com.kyc.core.exception.handlers.KycGenericRestExceptionHandler;
 import com.kyc.core.exception.handlers.KycUnhandledExceptionHandler;
 import com.kyc.core.exception.handlers.KycValidationRestExceptionHandler;
-import com.kyc.core.properties.KycMessages;
+import com.kyc.core.properties.KycMessages;;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.core.mapping.JdbcMappingContext;
 import org.springframework.data.relational.core.mapping.DefaultNamingStrategy;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import static com.kyc.bills.constants.AppConstants.MESSAGE_000;
 import static com.kyc.bills.constants.AppConstants.MESSAGE_001;
@@ -18,6 +20,8 @@ import static com.kyc.bills.constants.AppConstants.MESSAGE_001;
 
 @Import(value = {KycMessages.class, BuildDetailConfig.class, KycGenericRestExceptionHandler.class})
 @Configuration
+@EnableFeignClients(value = "com.kyc.core.rest.feign.common")
+@EnableMethodSecurity
 public class AppConfig {
 
     @Bean

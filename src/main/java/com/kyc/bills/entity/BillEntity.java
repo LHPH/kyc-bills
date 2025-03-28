@@ -27,7 +27,7 @@ public class BillEntity {
     private Double total;
 
     @Column(value = "ID_CUSTOMER")
-    private Integer idCustomer;
+    private Long idCustomer;
 
     @Column(value = "SETTLED")
     private boolean settled;

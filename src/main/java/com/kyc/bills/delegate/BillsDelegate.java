@@ -2,11 +2,15 @@ package com.kyc.bills.delegate;
 
 import com.kyc.bills.model.BillData;
 import com.kyc.bills.service.BillsService;
+import com.kyc.core.model.jwt.JwtData;
 import com.kyc.core.model.web.RequestData;
 import com.kyc.core.model.web.ResponseData;
 import com.kyc.core.util.GeneralUtil;
+import com.kyc.core.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,7 +27,10 @@ public class BillsDelegate {
 
     public ResponseEntity<ResponseData<List<BillData>>> getAllBills(RequestData<Void> requestData){
 
-        Long customerId = 5L;
+        JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        JwtData jwtData = TokenUtil.transform(jwtAuthenticationToken.getToken());
+
+        Long customerId = jwtData.getOwner();
         Map<String,String> params = requestData.getQueryParams();
 
         return billsService.getAllBills(customerId,params.get(PARAM_PAGE)).toResponseEntity();
@@ -39,6 +46,12 @@ public class BillsDelegate {
 
     public ResponseEntity<ResponseData<BillData>> getBillById(RequestData<Void> requestData){
 
-        return billsService.getBillById(requestData).toResponseEntity();
+        JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        JwtData jwtData = TokenUtil.transform(jwtAuthenticationToken.getToken());
+
+        return billsService.getBillById(requestData.toBuilder()
+                .auth(jwtData)
+                .build())
+                .toResponseEntity();
     }
 }
