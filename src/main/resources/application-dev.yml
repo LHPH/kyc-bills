@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: ${DATABASE_URI}
-    #url: jdbc:postgresql://localhost:6000/kyc_database?user=kyc_user&password=kyc_pass
+    #url: jdbc:postgresql://localhost:5432/kyc_database?user=kyc_user&password=kyc_pass
     driverClassName: org.postgresql.Driver
     hikari:
       maximum-pool-size: 1
