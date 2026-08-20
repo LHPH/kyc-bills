@@ -2,6 +2,7 @@ package com.kyc.bills.config;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.kyc.core.config.BuildDetailConfig;
+import com.kyc.core.config.EnableMockResourceServerSecurityConfig;
 import com.kyc.core.exception.handlers.KycGenericRestExceptionHandler;
 import com.kyc.core.exception.handlers.KycUnhandledExceptionHandler;
 import com.kyc.core.exception.handlers.KycValidationRestExceptionHandler;
@@ -20,7 +21,12 @@ import static com.kyc.bills.constants.AppConstants.MESSAGE_001;
 ;
 
 
-@Import(value = {KycMessages.class, BuildDetailConfig.class, KycGenericRestExceptionHandler.class})
+@Import(value = {
+        KycMessages.class,
+        BuildDetailConfig.class,
+        KycGenericRestExceptionHandler.class,
+        EnableMockResourceServerSecurityConfig.class
+})
 @Configuration
 @EnableFeignClients(value = "com.kyc.core.rest.feign.common")
 @EnableMethodSecurity
